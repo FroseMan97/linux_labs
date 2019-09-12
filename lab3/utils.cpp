@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -23,8 +21,9 @@ string inputString(string message){
     return str;
 }
 
-void showAttributes(const char *name){
-    cout << endl << endl << name << endl;
+void writeAttributes(const char *name, string filename){
+    ofstream cout(filename, ios_base::app);
+    cout << endl << name << endl;
     pid_t pid = getpid();
     cout << "Идентификатор процесса " << pid << endl;
     cout << "Идентификатор предка " << getppid() << endl;
@@ -35,4 +34,5 @@ void showAttributes(const char *name){
     cout << "Реальный групповой идентификатор " << getgid() << endl;
     cout << "Эффективный групповой идентификатор " << getegid() << endl;
     cout << endl;
+    cout.close();
 }
