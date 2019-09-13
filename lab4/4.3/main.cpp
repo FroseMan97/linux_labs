@@ -4,12 +4,14 @@
 using namespace std;
 // 1 поток - нечетные строки
 // 2 поток - четные
+pthread_mutex_t lock;
 ofstream out_1, out_2;
  ifstream in;
 static void * start_thread_1(void *arg);
 static void * start_thread_2(void *arg);
 string line;
 int main(){
+    pthread_mutex_init(&lock,NULL);
     in.open("/home/sergey/Рабочий стол/linux_labs/lab4/4.3/in.txt");
     out_1.open("/home/sergey/Рабочий стол/linux_labs/lab4/4.3/out_1.txt");
     out_2.open("/home/sergey/Рабочий стол/linux_labs/lab4/4.3/out_2.txt");
@@ -20,15 +22,15 @@ int main(){
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     while(getline(in, line)){
+        pthread_mutex_lock(&lock);
         linesCount++;
         if(linesCount % 2 != 0){
             pthread_create(&thread_1,&attr,&start_thread_1,&line);
-            pthread_join(thread_1,NULL);
         }
         else{
             pthread_create(&thread_2,&attr,&start_thread_2,&line);
-            pthread_join(thread_2,NULL);
         }
+        pthread_mutex_unlock(&lock);
     }
     in.close();
     out_1.close();
