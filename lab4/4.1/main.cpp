@@ -45,7 +45,7 @@ static void * thread_start(void *arg) {
     nbytes = sizeof(buf);
     bytes_read = read(fd, buf, nbytes);
     printf("[Текст из файла]:\n%s",buf);
-    //close(fd);
+    close(fd);
     if(fd_is_valid(fd) == 0){
         printf("[New thread]Поток закрыл файл\n");
     }
@@ -57,7 +57,7 @@ int main() {
     pthread_t thread;
     pthread_attr_t attr;
     struct sched_param param;
-    fd = open("/home/sergey/Рабочий стол/linux_labs/lab4/test.txt", O_RDONLY);
+    fd = open("/home/sergey/Рабочий стол/linux_labs/lab4/4.1/test.txt", O_RDONLY);
     if(fd == -1){
         printf("[лог]Файл не открылся\n");
         return -1;
