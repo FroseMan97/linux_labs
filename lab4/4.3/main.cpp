@@ -26,9 +26,11 @@ int main(){
         linesCount++;
         if(linesCount % 2 != 0){
             pthread_create(&thread_1,&attr,&start_thread_1,&line);
+            pthread_join(thread_1,NULL);
         }
         else{
             pthread_create(&thread_2,&attr,&start_thread_2,&line);
+            pthread_join(thread_2,NULL);
         }
         pthread_mutex_unlock(&lock);
     }
