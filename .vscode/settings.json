@@ -5,6 +5,7 @@
         "iosfwd": "cpp",
         "limits": "cpp",
         "algorithm": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "chrono": "cpp"
     }
 }
