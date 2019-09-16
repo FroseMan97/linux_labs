@@ -9,6 +9,8 @@
 #include <chrono>
 #include <ctime>
 
+// не является готовой, aka мусор
+
 using namespace std;
 
 int iteration = 0;
