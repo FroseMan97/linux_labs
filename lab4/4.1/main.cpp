@@ -45,7 +45,7 @@ static void * thread_start(void *arg) {
     nbytes = sizeof(buf);
     bytes_read = read(fd, buf, nbytes);
     printf("[Текст из файла]:\n%s",buf);
-    close(fd);
+    //close(fd);
     if(fd_is_valid(fd) == 0){
         printf("[New thread]Поток закрыл файл\n");
     }
