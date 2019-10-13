@@ -23,9 +23,6 @@ int main(){
     file << "fork - " << to_string(fork_sleep) << " seconds" << endl;
     file << "vfork - " << to_string(vfork_sleep) << " seconds"  << endl;
 
-    sleep(main_sleep);
-    writeAttributes("main", filename);
-
     if(fork() == 0){
         sleep(fork_sleep);
         writeAttributes("fork",filename);
@@ -36,10 +33,12 @@ int main(){
             sleep(vfork_sleep);
             writeAttributes("vfork",filename);
 
-            execv(argv[0], argv);
-
-            perror("exec error");
-            exit(-1);
+            if(execv(argv[0], argv) == -1){
+                exit(1);
+            }
+    } else {
+        sleep(main_sleep);
+        writeAttributes("main", filename);
     }
     
     file.close();
