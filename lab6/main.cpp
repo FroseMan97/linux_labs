@@ -19,15 +19,15 @@ int period;
 
 void catch_signal(int ignored) {
     if(fork() == 0){
+        signal(SIGTSTP,SIG_IGN);
         auto start = chrono::system_clock::now();
         time_t start_time = chrono::system_clock::to_time_t(start);
         auto end = std::chrono::system_clock::now();
         chrono::duration<double> elapsed_seconds = end-start;
-        printf("Дочерний процесс[%d] - %d\nStart time: %sElapsed time: %f\n", 
+        printf("\nДочерний процесс[%d] - %d\nStart time: %s\n", 
             iteration,
             getpid(),
-            ctime(&start_time),
-            elapsed_seconds.count()
+            ctime(&start_time)
             );
         exit(0);
     }
@@ -49,6 +49,7 @@ void start_timer(int interval) {
 }
 
 int main (int argc, const char **argv) {
+    signal(SIGTSTP,SIG_IGN);
     cout << "Количество запусков = ";
     cin >> number_of_starts;
     cout << "Период = ";
@@ -56,15 +57,16 @@ int main (int argc, const char **argv) {
     auto start = chrono::system_clock::now();
         time_t start_time = chrono::system_clock::to_time_t(start);
     start_timer(period);
-    if(iteration == number_of_starts){
-        exit(0);
-    }
-    while(1);
-    auto end = std::chrono::system_clock::now();
-        chrono::duration<double> elapsed_seconds = end-start;
-        printf("[Main]Start time: %sElapsed time: %f\n", 
+    while(true){
+        if(iteration == number_of_starts){
+            auto end = std::chrono::system_clock::now();
+            chrono::duration<double> elapsed_seconds = end-start;
+            printf("\n------[Main]Start time: %sElapsed time: %f seconds\n", 
             ctime(&start_time),
             elapsed_seconds.count()
             );
+            exit(0);
+        }
+    }
     return 0;
 }
