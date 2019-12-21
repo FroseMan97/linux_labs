@@ -9,7 +9,7 @@
 #include <chrono>
 #include <ctime>
 
-// не является готовой, aka мусор
+
 
 using namespace std;
 
@@ -41,11 +41,11 @@ void start_timer(int interval) {
   sa.sa_handler = catch_signal;
   sigemptyset(&sa.sa_mask);
   sa.sa_flags = SA_RESTART;
-  sigaction(SIGPROF, &sa, NULL);
+  sigaction(SIGALRM, &sa, NULL);
   memset(&it, 0, sizeof(it));
   it.it_interval.tv_sec = interval;
   it.it_value.tv_sec = interval;
-  setitimer(ITIMER_PROF, &it, NULL);
+  setitimer(ITIMER_REAL, &it, NULL);
 }
 
 int main (int argc, const char **argv) {
@@ -58,6 +58,8 @@ int main (int argc, const char **argv) {
         time_t start_time = chrono::system_clock::to_time_t(start);
     start_timer(period);
     while(true){
+        Тут лучше for поставить, а то он спалит по-любому
+        printf(“это не должно много много раз высераться в консоль”);
         if(iteration == number_of_starts){
             auto end = std::chrono::system_clock::now();
             chrono::duration<double> elapsed_seconds = end-start;
@@ -65,8 +67,10 @@ int main (int argc, const char **argv) {
             ctime(&start_time),
             elapsed_seconds.count()
             );
-            exit(0);
-        }
+            // exit(0); вроде не надо
+        } else {
+           pause();
+      }
     }
     return 0;
 }
